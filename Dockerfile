@@ -1,18 +1,17 @@
-# Dockerfile
+FROM eclipse-temurin:17-jdk-alpine as builder
+
+WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
+
 FROM eclipse-temurin:17-jre-alpine
 
-# Thư mục làm việc
 WORKDIR /app
+COPY --from=builder /app/target/tuan7-0.0.1-SNAPSHOT.jar app.jar
 
-# Copy file JAR
-COPY target/tuan7-0.0.1-SNAPSHOT.jar app.jar
-
-# Tạo user không phải root để chạy ứng dụng
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring
 
-# Expose port
 EXPOSE 8080
 
-# Chạy ứng dụng
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
