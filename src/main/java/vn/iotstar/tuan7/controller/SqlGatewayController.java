@@ -14,7 +14,8 @@ public class SqlGatewayController {
     @Autowired
     private SqlService sqlService;
 
-    @GetMapping("/sqlGateway")
+    // THÊM mapping cho trang chủ
+    @GetMapping({"/", "/sqlGateway"})
     public String getForm(Model model) {
         model.addAttribute("sqlStatement", "SELECT 1;");
         model.addAttribute("sqlResult", "");
